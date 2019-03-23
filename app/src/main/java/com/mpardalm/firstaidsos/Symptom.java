@@ -1,5 +1,9 @@
 package com.mpardalm.firstaidsos;
 
+/**
+ * Created by mpardalm
+ * */
+
 public class Symptom {
 
     private String name;

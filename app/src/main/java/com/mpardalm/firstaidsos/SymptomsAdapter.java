@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Created by mpardalm
+ * */
+
 public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.SymptonsViewHolder>{
 
     private ArrayList<Symptom> symptomArrayList;
@@ -57,10 +61,20 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
             checkBoxSymptom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(symptom.isChecked())
+                    symptom.setChecked(symptom.isChecked());
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(symptom.isChecked()) {
+                        checkBoxSymptom.setChecked(false);
                         symptom.setChecked(false);
-                    else
+                    }else {
+                        checkBoxSymptom.setChecked(true);
                         symptom.setChecked(true);
+                    }
                 }
             });
         }
