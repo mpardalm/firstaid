@@ -14,8 +14,12 @@ import static com.mpardalm.firstaidsos.utils.UtilsConstant.CREATE_TABLE_SYMPTOMS
 
 public class ConectionSQLiteHelper extends SQLiteOpenHelper {
 
+    Context context;
+
     public ConectionSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+
+        this.context = context;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class ConectionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + UtilsConstant.SYMPTOMS_TABLE);
+        db.execSQL(context.getString(R.string.drop)+ " " + UtilsConstant.SYMPTOMS_TABLE);
         onCreate(db);
     }
 }

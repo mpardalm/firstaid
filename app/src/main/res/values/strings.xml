@@ -6,4 +6,5 @@
 
     <!-- DataBase -->
     <string name="select_all">Select * from</string>
+    <string name="drop">DROP TABLE IF EXISTS</string>
 </resources>
