@@ -3,13 +3,7 @@ package com.mpardalm.firstaidsos;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +15,15 @@ import com.mpardalm.firstaidsos.utils.UtilsConstant;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by mpardalm
  * */
@@ -31,10 +34,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ConectionSQLiteHelper conectionSQLiteHelper;
 
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.cardButtonSearch)
     CardView cardView;
+
+    @BindView(R.id.recViewSymptom)
     RecyclerView symptomsRecView;
+
+    @BindView(R.id.bannerTop)
     AdView mAdViewTop;
+
+    @BindView(R.id.bannerBottom)
     AdView mAdViewBottom;
 
     ArrayList<Symptom> list = new ArrayList<>();
@@ -43,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        initComponents();
         initToolbar();
         initAds();
         initDataBase();
@@ -74,14 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else
                     Toast.makeText(getBaseContext(), String.valueOf(res), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void initComponents(){
-        toolbar = findViewById(R.id.toolbar);
-        cardView = findViewById(R.id.cardButtonSearch);
-        symptomsRecView = findViewById(R.id.recViewSymptom);
-        mAdViewTop = findViewById(R.id.bannerTop);
-        mAdViewBottom = findViewById(R.id.bannerBottom);
     }
 
     private void initAds(){

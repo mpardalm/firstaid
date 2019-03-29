@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -34,14 +34,14 @@
         android:layout_below="@id/bannerTop"
         android:layout_margin="8dp"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recViewSymptom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/selectSymptoms"
         android:layout_above="@id/cardButtonSearch"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardButtonSearch"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -59,7 +59,7 @@
             android:textAlignment="center"
             android:layout_gravity="center"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/bannerBottom"

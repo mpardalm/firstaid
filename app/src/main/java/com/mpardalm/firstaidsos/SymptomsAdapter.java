@@ -1,7 +1,5 @@
 package com.mpardalm.firstaidsos;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +7,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by mpardalm
@@ -58,23 +59,15 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
             textViewSymptom.setText(symptom.getName());
             checkBoxSymptom.setChecked(symptom.isChecked());
 
-            checkBoxSymptom.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    symptom.setChecked(symptom.isChecked());
-                }
-            });
+            checkBoxSymptom.setOnClickListener(v -> symptom.setChecked(!symptom.isChecked()));
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(symptom.isChecked()) {
-                        checkBoxSymptom.setChecked(false);
-                        symptom.setChecked(false);
-                    }else {
-                        checkBoxSymptom.setChecked(true);
-                        symptom.setChecked(true);
-                    }
+            itemView.setOnClickListener(v -> {
+                if(symptom.isChecked()) {
+                    checkBoxSymptom.setChecked(false);
+                    symptom.setChecked(false);
+                }else {
+                    checkBoxSymptom.setChecked(true);
+                    symptom.setChecked(true);
                 }
             });
         }
