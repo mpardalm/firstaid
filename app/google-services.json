@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1093140550968",
+    "firebase_url": "https://first-aid-sos.firebaseio.com",
+    "project_id": "first-aid-sos",
+    "storage_bucket": "first-aid-sos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093140550968:android:a72d4c54860097df",
+        "android_client_info": {
+          "package_name": "com.mpardalm.firstaidsos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093140550968-m5s36bsilbiq8d43oc2f7mk7803fim0k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mpardalm.firstaidsos",
+            "certificate_hash": "7600cc1ae250a4f6e021fa195e3b36d9131a7762"
+          }
+        },
+        {
+          "client_id": "1093140550968-99l8fg01bp8r8qnk9op49u0049vmeqkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjB9Is5FMCqX2oHA4PEtYW46WsOZwWSi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093140550968-99l8fg01bp8r8qnk9op49u0049vmeqkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

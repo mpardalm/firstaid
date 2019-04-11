@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -40,8 +41,18 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
 
     // ButterKnife for View Injection.
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor "com.jakewharton:butterknife-compiler:10.0.0"
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
 
+    //Square Rating
     implementation 'com.github.ashokslsk:SquareRatingView:1.2'
+
+    //Firebase Project
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+
+    //Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore:18.2.0'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

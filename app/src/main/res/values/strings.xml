@@ -3,8 +3,4 @@
     <string name="find_button">Buscar</string>
     <string name="symptoms_question">¿Qué Síntomas padece?</string>
     <string name="at_least_one_symptom">Seleccione al menos un síntoma</string>
-
-    <!-- DataBase -->
-    <string name="select_all">Select * from</string>
-    <string name="drop">DROP TABLE IF EXISTS</string>
 </resources>

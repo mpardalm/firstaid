@@ -1,19 +1,21 @@
 package com.mpardalm.firstaidsos;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.mpardalm.firstaidsos.utils.UtilsConstant;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mpardalm.firstaidsos.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,9 +32,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String DBName= "DB_APP";
-
-    ConectionSQLiteHelper conectionSQLiteHelper;
+    private final String TAG = "MPM";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -49,7 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.bannerBottom)
     AdView mAdViewBottom;
 
-    ArrayList<Symptom> list = new ArrayList<>();
+    @BindView(R.id.selectSymptoms)
+    TextView selectSymptoms;
+
+    @BindView(R.id.no_internet)
+    ImageView noInternetImage;
+
+    private FirebaseFirestore db;
+    private ArrayList<Symptom> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +65,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
 
         initToolbar();
-        initAds();
-        initDataBase();
-        initSymptomList();
-        initAdapter();
+        if(Utils.init(this).checkInternetConnecction())
+            normalShow();
+        else
+            showNoInternet();
 
         cardView.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Utils.init(this).checkInternetConnecction())
+            normalShow();
+        else
+            showNoInternet();
+    }
+
+    private void normalShow(){
+        noInternetImage.setVisibility(View.INVISIBLE);
+        mAdViewBottom.setVisibility(View.VISIBLE);
+        mAdViewTop.setVisibility(View.VISIBLE);
+        cardView.setVisibility(View.VISIBLE);
+        symptomsRecView.setVisibility(View.VISIBLE);
+        selectSymptoms.setVisibility(View.VISIBLE);
+        initAds();
+        initDataBase();
+        initAdapter();
+    }
+
+    private void showNoInternet(){
+        noInternetImage.setVisibility(View.VISIBLE);
+        mAdViewBottom.setVisibility(View.INVISIBLE);
+        mAdViewTop.setVisibility(View.INVISIBLE);
+        cardView.setVisibility(View.INVISIBLE);
+        symptomsRecView.setVisibility(View.INVISIBLE);
+        selectSymptoms.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -101,25 +139,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
     }
 
-    private void initSymptomList(){
-        conectionSQLiteHelper = new ConectionSQLiteHelper(this, DBName, null, 1);
-        SQLiteDatabase db = conectionSQLiteHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(getString(R.string.select_all) + " " + UtilsConstant.SYMPTOMS_TABLE, null);
-        ArrayList<String> symptomNames = new ArrayList<>();
-
-        if(cursor.moveToFirst()){
-            while (!cursor.isAfterLast()){
-                symptomNames.add(cursor.getString(cursor.getColumnIndex(UtilsConstant.SYMPTOMS_NAME)));
-                cursor.moveToNext();
-            }
-        }
-        for(String symptom: symptomNames){
-            list.add(new Symptom(symptom, false));
-        }
-        cursor.close();
-    }
-
     private void initAdapter(){
         SymptomsAdapter symptomsAdapter = new SymptomsAdapter(list);
         symptomsRecView.setAdapter(symptomsAdapter);
@@ -131,17 +150,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDataBase(){
-        conectionSQLiteHelper = new ConectionSQLiteHelper(this, DBName, null, 1);
+        db = FirebaseFirestore.getInstance();
 
-        SQLiteDatabase db = conectionSQLiteHelper.getWritableDatabase();
-        conectionSQLiteHelper.onUpgrade(db, 1, 1);
-        ContentValues values = new ContentValues();
-
-        ArrayList<String> symptomNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.symptoms_array)));
-        for(String symptoms: symptomNames){
-            values.put(UtilsConstant.SYMPTOMS_NAME, symptoms);
-            db.insert(UtilsConstant.SYMPTOMS_TABLE, UtilsConstant.SYMPTOMS_NAME, values);
-        }
-        db.close();
+        //get all documentes from symptoms
+        db.collection("symptoms")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if(task.getResult().size() > list.size()){
+                            list.clear();
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                list.add(new Symptom((String) document.get("name"), false));
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        }
+                    } else {
+                        Log.w(TAG, "Error getting documents.", task.getException());
+                    }
+                });
     }
 }
