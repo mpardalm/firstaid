@@ -9,11 +9,25 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/no_internet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/no_internet_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_no_wifi"
-        android:layout_margin="32dp"/>
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/no_internet_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/no_internet_image"
+        android:layout_centerInParent="true"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_dark_background"
+        android:text="Compruebe su conexión a Internet"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

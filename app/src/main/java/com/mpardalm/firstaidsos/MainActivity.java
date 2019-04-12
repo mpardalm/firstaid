@@ -1,5 +1,6 @@
 package com.mpardalm.firstaidsos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -52,23 +54,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.selectSymptoms)
     TextView selectSymptoms;
 
-    @BindView(R.id.no_internet)
+    @BindView(R.id.no_internet_image)
     ImageView noInternetImage;
+
+    @BindView(R.id.no_internet_text)
+    TextView noInternetText;
 
     private FirebaseFirestore db;
     private ArrayList<Symptom> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         initToolbar();
-        if(Utils.init(this).checkInternetConnecction())
-            normalShow();
-        else
-            showNoInternet();
 
         cardView.setOnClickListener(this);
 
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void normalShow(){
         noInternetImage.setVisibility(View.INVISIBLE);
+        noInternetText.setVisibility(View.INVISIBLE);
         mAdViewBottom.setVisibility(View.VISIBLE);
         mAdViewTop.setVisibility(View.VISIBLE);
         cardView.setVisibility(View.VISIBLE);
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showNoInternet(){
         noInternetImage.setVisibility(View.VISIBLE);
+        noInternetText.setVisibility(View.VISIBLE);
         mAdViewBottom.setVisibility(View.INVISIBLE);
         mAdViewTop.setVisibility(View.INVISIBLE);
         cardView.setVisibility(View.INVISIBLE);
@@ -121,17 +125,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 if(res == 0)
                     Toast.makeText(getBaseContext(), R.string.at_least_one_symptom, Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getBaseContext(), String.valueOf(res), Toast.LENGTH_SHORT).show();
+                else{
+                    Intent intent = new Intent(this, DiagnosisActivity.class);
+                    startActivity(intent);
+                }
+
         }
     }
 
     private void initAds(){
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, getString(R.string.id_APP_AdMob));
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdViewTop.loadAd(adRequest);
         mAdViewBottom.loadAd(adRequest);
+
+        mAdViewTop.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                 super.onAdFailedToLoad(i);
+            }
+        });
     }
 
     private void initToolbar(){
