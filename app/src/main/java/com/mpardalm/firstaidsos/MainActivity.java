@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mpardalm.firstaidsos.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.no_internet_text)
     TextView noInternetText;
 
-    private FirebaseFirestore db;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
     private ArrayList<Symptom> list = new ArrayList<>();
 
     @Override
@@ -94,9 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardView.setVisibility(View.VISIBLE);
         symptomsRecView.setVisibility(View.VISIBLE);
         selectSymptoms.setVisibility(View.VISIBLE);
-        initAds();
         initDataBase();
-        initAdapter();
+        initAds();
     }
 
     private void showNoInternet(){
@@ -118,15 +122,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.cardButtonSearch:
-                int res = 0;
+                ArrayList<String> listSymptomsName = new ArrayList<>();
                 for(Symptom symptom: list){
                     if(symptom.isChecked())
-                        res++;
+                        listSymptomsName.add(symptom.getName());
                 }
-                if(res == 0)
+                if(listSymptomsName.size() == 0)
                     Toast.makeText(getBaseContext(), R.string.at_least_one_symptom, Toast.LENGTH_SHORT).show();
                 else{
                     Intent intent = new Intent(this, DiagnosisActivity.class);
+                    intent.putExtra("listSymptomsName", listSymptomsName);
                     startActivity(intent);
                 }
 
@@ -136,19 +141,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initAds(){
         MobileAds.initialize(this, getString(R.string.id_APP_AdMob));
 
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("A8AFC23C5A106DBDF865F401C14CE9E1")
+                .build();
+
         mAdViewTop.loadAd(adRequest);
         mAdViewBottom.loadAd(adRequest);
 
         mAdViewTop.setAdListener(new AdListener(){
             @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-            }
-
-            @Override
             public void onAdFailedToLoad(int i) {
-                 super.onAdFailedToLoad(i);
+                super.onAdFailedToLoad(i);
             }
         });
     }
@@ -169,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDataBase(){
-        db = FirebaseFirestore.getInstance();
+        progressBar.setVisibility(View.VISIBLE);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //get all documentes from symptoms
         db.collection("symptoms")
@@ -186,6 +190,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
                     }
+                    Collections.sort(list, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    progressBar.setVisibility(View.INVISIBLE);
+                    initAdapter();
                 });
     }
 }

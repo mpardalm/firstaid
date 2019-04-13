@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
     <ImageView
         android:id="@+id/no_internet_image"
         android:layout_width="wrap_content"
@@ -27,7 +33,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/cardview_dark_background"
-        android:text="Compruebe su conexión a Internet"/>
+        android:text="@string/check_internet"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

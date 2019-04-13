@@ -34,7 +34,6 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
 
     @Override
     public void onBindViewHolder(@NonNull SymptonsViewHolder symptonsViewHolder, int position) {
-        Collections.sort(symptomArrayList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
         Symptom symptom = symptomArrayList.get(position);
 
         symptonsViewHolder.bindSympton(symptom);
