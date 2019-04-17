@@ -1,4 +1,4 @@
-package com.mpardalm.firstaidsos;
+package com.mpardalm.firstaidsos.data;
 
 /**
  * Created by mpardalm
@@ -9,7 +9,7 @@ public class Symptom {
     private String name;
     private boolean checked;
 
-    public Symptom(String name, boolean checked){
+    Symptom(String name, boolean checked){
         this.name = name;
         this.checked = checked;
     }

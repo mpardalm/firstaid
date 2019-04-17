@@ -1,8 +1,7 @@
-package com.mpardalm.firstaidsos;
+package com.mpardalm.firstaidsos.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -13,13 +12,13 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mpardalm.firstaidsos.R;
+import com.mpardalm.firstaidsos.data.FireStoreDataBase;
+import com.mpardalm.firstaidsos.data.Symptom;
+import com.mpardalm.firstaidsos.adapters.SymptomsAdapter;
 import com.mpardalm.firstaidsos.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -91,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void normalShow(){
+        progressBar.setVisibility(View.VISIBLE);
         noInternetImage.setVisibility(View.INVISIBLE);
         noInternetText.setVisibility(View.INVISIBLE);
         mAdViewBottom.setVisibility(View.VISIBLE);
@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardView.setVisibility(View.VISIBLE);
         symptomsRecView.setVisibility(View.VISIBLE);
         selectSymptoms.setVisibility(View.VISIBLE);
-        initDataBase();
         initAds();
+        initDataBase();
     }
 
     private void showNoInternet(){
@@ -171,27 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDataBase(){
-        progressBar.setVisibility(View.VISIBLE);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        //get all documentes from symptoms
-        db.collection("symptoms")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(task.getResult().size() > list.size()){
-                            list.clear();
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                list.add(new Symptom((String) document.get("name"), false));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                    Collections.sort(list, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-                    progressBar.setVisibility(View.INVISIBLE);
-                    initAdapter();
-                });
+        list = FireStoreDataBase.init(this).initDataBase(progressBar);
+        initAdapter();
     }
 }

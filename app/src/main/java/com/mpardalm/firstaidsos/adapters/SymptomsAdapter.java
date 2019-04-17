@@ -1,4 +1,4 @@
-package com.mpardalm.firstaidsos;
+package com.mpardalm.firstaidsos.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.mpardalm.firstaidsos.R;
+import com.mpardalm.firstaidsos.data.Symptom;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by mpardalm
  * */
 
-public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.SymptonsViewHolder>{
+public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.SymptomsViewHolder>{
 
     private ArrayList<Symptom> symptomArrayList;
 
@@ -26,17 +28,17 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
 
     @NonNull
     @Override
-    public SymptonsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public SymptomsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_sympton, viewGroup, false);
 
-        return new SymptonsViewHolder(view);
+        return new SymptomsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SymptonsViewHolder symptonsViewHolder, int position) {
+    public void onBindViewHolder(@NonNull SymptomsViewHolder symptomsViewHolder, int position) {
         Symptom symptom = symptomArrayList.get(position);
 
-        symptonsViewHolder.bindSympton(symptom);
+        symptomsViewHolder.bindSympton(symptom);
     }
 
     @Override
@@ -44,12 +46,12 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
         return symptomArrayList.size();
     }
 
-    public static class SymptonsViewHolder extends RecyclerView.ViewHolder{
+    public static class SymptomsViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewSymptom;
         CheckBox checkBoxSymptom;
 
-        public SymptonsViewHolder(@NonNull View itemView) {
+        public SymptomsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewSymptom = itemView.findViewById(R.id.symptonName);
