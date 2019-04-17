@@ -4,4 +4,6 @@
     <string name="symptoms_question">¿Qué Síntomas padece?</string>
     <string name="at_least_one_symptom">Seleccione al menos un síntoma</string>
     <string name="check_internet">Compruebe su conexión a Internet</string>
+
+    <string name="urgency">Grado de Urgencia</string>
 </resources>

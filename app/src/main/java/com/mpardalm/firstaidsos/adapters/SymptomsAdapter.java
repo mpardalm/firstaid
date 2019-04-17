@@ -20,7 +20,7 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.Sympto
 
     private ArrayList<Symptom> symptomArrayList;
 
-    SymptomsAdapter(ArrayList<Symptom> symptomArrayList) {
+    public SymptomsAdapter(ArrayList<Symptom> symptomArrayList) {
         this.symptomArrayList = symptomArrayList;
     }
 

@@ -22,18 +22,10 @@
         android:layout_below="@id/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recViewSymptom"
+        android:id="@+id/recViewDiagnosis"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/bannerTop"
         android:layout_above="@id/cardButtonSearch"/>
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/bannerBottom"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_top"
-        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

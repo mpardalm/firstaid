@@ -46,8 +46,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
 
-    //Square Rating
-    implementation 'com.github.ashokslsk:SquareRatingView:1.2'
+    //Proper Rating Bar
+    implementation 'com.github.techery:properratingbar:0.0.5'
 
     //Firebase Project
     implementation 'com.google.firebase:firebase-core:16.0.8'
