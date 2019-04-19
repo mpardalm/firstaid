@@ -52,11 +52,13 @@
         android:gravity="end">
 
         <TextView
+            android:id="@+id/urgency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/urgency"
             android:layout_gravity="center"
             android:textAlignment="center"
+            android:textStyle="bold|italic"
             android:layout_margin="8dp"/>
 
         <io.techery.properratingbar.ProperRatingBar

@@ -1,16 +1,15 @@
 package com.mpardalm.firstaidsos.activities;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mpardalm.firstaidsos.R;
 import com.mpardalm.firstaidsos.adapters.DiagnosisAdapter;
 import com.mpardalm.firstaidsos.data.Diagnosis;
+import com.mpardalm.firstaidsos.data.FireStoreDataBase;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,15 +22,17 @@ import butterknife.ButterKnife;
 
 public class DiagnosisActivity extends AppCompatActivity {
 
-    ArrayList<String> listSymptomsName;
-    ArrayList<Diagnosis> listDiagnosis;
-    private final String TAG = "MPM";
+    private ArrayList<String> listSymptomsName;
+    private ArrayList<Diagnosis> listDiagnosis;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @BindView(R.id.recViewDiagnosis)
     RecyclerView diagnosisRecView;
+
+    @BindView(R.id.progress_bar_diagnosis)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,15 +41,16 @@ public class DiagnosisActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         listDiagnosis = new ArrayList<>();
+        progressBar.setVisibility(View.VISIBLE);
 
-        listSymptomsName = getIntent().getStringArrayListExtra("listSymptomsName");
+        listSymptomsName = getIntent().getStringArrayListExtra(getString(R.string.listSymptomsName));
         initToolbar();
-        inittDB();
+        initDB();
 
     }
 
     private void initToolbar(){
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
@@ -57,7 +59,7 @@ public class DiagnosisActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void initAdapter(){
+    public void initAdapter(){
         DiagnosisAdapter symptomsAdapter = new DiagnosisAdapter(listDiagnosis, this);
         diagnosisRecView.setAdapter(symptomsAdapter);
         diagnosisRecView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,38 +69,11 @@ public class DiagnosisActivity extends AppCompatActivity {
         diagnosisRecView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void inittDB(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        ArrayList<QueryDocumentSnapshot> documentList = new ArrayList<>();
+    private void initDB(){
+        FireStoreDataBase.init(this).getDiagnosisDataBase(listSymptomsName, this, progressBar);
+    }
 
-        for(int i=0; i<listSymptomsName.size(); i++) {
-
-            db.collection("diagnosis")
-                    .whereArrayContains("symptoms", listSymptomsName.get(i))
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                if(!documentList.contains(document)){
-                                    documentList.add(document);
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                }
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-
-                        for(QueryDocumentSnapshot document : documentList){
-                            Diagnosis d = new Diagnosis();
-                            d.setDescription((String) document.get("description"));
-                            d.setName((String) document.get("name"));
-                            d.setRecommendation((String) document.get("recommendation"));
-                            d.setSymptoms((ArrayList<String>) document.get("symptoms"));
-                            d.setEmergency((Long) document.get("emergency"));
-                            listDiagnosis.add(d);
-                        }
-                        initAdapter();
-                    });
-        }
+    public void setListDiagnosis(ArrayList<Diagnosis> listDiagnosis) {
+        this.listDiagnosis = listDiagnosis;
     }
 }

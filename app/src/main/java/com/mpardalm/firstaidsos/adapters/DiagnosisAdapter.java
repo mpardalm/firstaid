@@ -57,6 +57,7 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
         TextView diagnosisDescription;
         TextView diagnosisSymptoms;
         TextView diagnosisRecommendation;
+        TextView diagnosisUrgency;
         ProperRatingBar diagnosisSquare;
 
         public DiagnosisViewHolder(@NonNull View itemView, Context context) {
@@ -68,6 +69,7 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
             diagnosisSymptoms = itemView.findViewById(R.id.diagnosis_symptoms);
             diagnosisRecommendation = itemView.findViewById(R.id.diagnosis_recommendation);
             diagnosisSquare = itemView.findViewById(R.id.square);
+            diagnosisUrgency = itemView.findViewById(R.id.urgency);
 
             this.context = context;
         }
@@ -83,12 +85,15 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
             switch ((int) diagnosis.getEmergency()){
                 case 1:
                     diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
+                    diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency1)));
                     break;
                 case 2:
                     diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.bluePrimary));
+                    diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency2)));
                     break;
                 case 3:
                     diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                    diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency3)));
                     break;
             }
 

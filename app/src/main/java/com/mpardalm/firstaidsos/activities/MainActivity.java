@@ -35,8 +35,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = "MPM";
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.no_internet_text)
     TextView noInternetText;
 
-    @BindView(R.id.progress_bar)
+    @BindView(R.id.progress_bar_symptoms)
     ProgressBar progressBar;
 
     private ArrayList<Symptom> list = new ArrayList<>();
@@ -121,18 +119,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.cardButtonSearch:
-                ArrayList<String> listSymptomsName = new ArrayList<>();
-                for(Symptom symptom: list){
-                    if(symptom.isChecked())
-                        listSymptomsName.add(symptom.getName());
+                if(Utils.init(this).checkInternetConnecction()){
+                    ArrayList<String> listSymptomsName = new ArrayList<>();
+                    for(Symptom symptom: list){
+                        if(symptom.isChecked())
+                            listSymptomsName.add(symptom.getName());
+                    }
+                    if(listSymptomsName.size() == 0)
+                        Toast.makeText(getBaseContext(), R.string.at_least_one_symptom, Toast.LENGTH_SHORT).show();
+                    else{
+                        Intent intent = new Intent(this, DiagnosisActivity.class);
+                        intent.putExtra(getString(R.string.listSymptomsName), listSymptomsName);
+                        startActivity(intent);
+                    }
+                }else{
+                    Toast.makeText(this, R.string.check_internet, Toast.LENGTH_SHORT).show();
                 }
-                if(listSymptomsName.size() == 0)
-                    Toast.makeText(getBaseContext(), R.string.at_least_one_symptom, Toast.LENGTH_SHORT).show();
-                else{
-                    Intent intent = new Intent(this, DiagnosisActivity.class);
-                    intent.putExtra("listSymptomsName", listSymptomsName);
-                    startActivity(intent);
-                }
+
 
         }
     }
@@ -160,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
     }
 
-    private void initAdapter(){
+    public void initAdapter(){
         SymptomsAdapter symptomsAdapter = new SymptomsAdapter(list);
         symptomsRecView.setAdapter(symptomsAdapter);
         symptomsRecView.setLayoutManager(new LinearLayoutManager(this));
@@ -171,7 +174,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDataBase(){
-        list = FireStoreDataBase.init(this).initDataBase(progressBar);
-        initAdapter();
+        FireStoreDataBase.init(this).initDataBaseSymptoms(progressBar, this);
+    }
+
+    public void setList(ArrayList<Symptom> list) {
+        this.list = list;
     }
 }

@@ -1,9 +1,25 @@
 <resources>
     <string name="app_name">First Aid SOS</string>
+
+    <!--Main Activity-->
     <string name="find_button">Buscar</string>
     <string name="symptoms_question">¿Qué Síntomas padece?</string>
     <string name="at_least_one_symptom">Seleccione al menos un síntoma</string>
     <string name="check_internet">Compruebe su conexión a Internet</string>
 
-    <string name="urgency">Grado de Urgencia</string>
+    <!--Urgency Grades-->
+    <string name="urgency">Grado de Urgencia: </string>
+    <string name="urgency1">No Urgente</string>
+    <string name="urgency2">Urgente</string>
+    <string name="urgency3">Muy Urgente</string>
+
+    <!--Constants-->
+    <string name="listSymptomsName">listSymptomsName</string>
+    <string name="symptoms">symptoms</string>
+    <string name="diagnosis">diagnosis</string>
+    <string name="name">name</string>
+    <string name="description">description</string>
+    <string name="emergency">emergency</string>
+    <string name="recommendation">recommendation</string>
+    <string name="image">image</string>
 </resources>
