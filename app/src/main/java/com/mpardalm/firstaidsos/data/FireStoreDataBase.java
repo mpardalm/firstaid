@@ -91,6 +91,7 @@ public class FireStoreDataBase {
 
                         for(QueryDocumentSnapshot document : documentList){
                             Diagnosis d = new Diagnosis();
+                            d.setImage((String) document.get(myContext.getResources().getString(R.string.image)));
                             d.setDescription((String) document.get(myContext.getResources().getString(R.string.description)));
                             d.setName((String) document.get(myContext.getResources().getString(R.string.name)));
                             d.setRecommendation((String) document.get(myContext.getResources().getString(R.string.recommendation)));

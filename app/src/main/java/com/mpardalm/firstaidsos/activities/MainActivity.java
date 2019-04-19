@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MobileAds.initialize(this, getString(R.string.id_APP_AdMob));
 
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("A8AFC23C5A106DBDF865F401C14CE9E1")
+                .addTestDevice(getString(R.string.my_device))
                 .build();
 
         mAdViewTop.loadAd(adRequest);

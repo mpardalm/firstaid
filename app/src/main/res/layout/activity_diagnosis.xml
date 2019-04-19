@@ -15,7 +15,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <com.google.android.gms.ads.AdView
-        android:id="@+id/bannerTop"
+        android:id="@+id/bannerTopDiagnosis"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         ads:adSize="BANNER"
@@ -26,7 +26,7 @@
         android:id="@+id/recViewDiagnosis"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/bannerTop"
+        android:layout_below="@id/bannerTopDiagnosis"
         android:layout_above="@id/cardButtonSearch"
         android:layout_marginBottom="8dp"/>
 

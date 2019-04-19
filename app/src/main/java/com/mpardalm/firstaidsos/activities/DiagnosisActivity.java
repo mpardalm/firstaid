@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.mpardalm.firstaidsos.R;
 import com.mpardalm.firstaidsos.adapters.DiagnosisAdapter;
 import com.mpardalm.firstaidsos.data.Diagnosis;
@@ -28,6 +32,9 @@ public class DiagnosisActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.bannerTopDiagnosis)
+    AdView mAdViewTop;
+
     @BindView(R.id.recViewDiagnosis)
     RecyclerView diagnosisRecView;
 
@@ -45,12 +52,29 @@ public class DiagnosisActivity extends AppCompatActivity {
 
         listSymptomsName = getIntent().getStringArrayListExtra(getString(R.string.listSymptomsName));
         initToolbar();
+        initAds();
         initDB();
-
     }
 
     private void initToolbar(){
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+
+    private void initAds(){
+        MobileAds.initialize(this, getString(R.string.id_APP_AdMob));
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(getString(R.string.my_device))
+                .build();
+
+        mAdViewTop.loadAd(adRequest);
+
+        mAdViewTop.setAdListener(new AdListener(){
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+        });
     }
 
     @Override

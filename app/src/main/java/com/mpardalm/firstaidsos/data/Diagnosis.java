@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Diagnosis {
 
+    private String image;
     private String description;
     private String name;
     private String recommendation;
@@ -54,5 +55,13 @@ public class Diagnosis {
 
     public void setEmergency(long emergency) {
         this.emergency = emergency;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

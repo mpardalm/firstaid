@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mpardalm.firstaidsos.R;
 import com.mpardalm.firstaidsos.data.Diagnosis;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 import io.techery.properratingbar.ProperRatingBar;
 
@@ -53,6 +55,7 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
 
         Context context;
 
+        AppCompatImageView diagnosisImage;
         TextView diagnosisName;
         TextView diagnosisDescription;
         TextView diagnosisSymptoms;
@@ -64,6 +67,7 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
 
             super(itemView);
 
+            diagnosisImage = itemView.findViewById(R.id.image_diagnosis);
             diagnosisName = itemView.findViewById(R.id.diagnosis_name);
             diagnosisDescription = itemView.findViewById(R.id.diagnosis_description);
             diagnosisSymptoms = itemView.findViewById(R.id.diagnosis_symptoms);
@@ -76,6 +80,7 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
 
 
         public void bindDiagnosis(final Diagnosis diagnosis){
+            Glide.with(context).load(diagnosis.getImage()).into(diagnosisImage);
             diagnosisName.setText(diagnosis.getName());
             diagnosisDescription.setText(diagnosis.getDescription());
             diagnosisRecommendation.setText(diagnosis.getRecommendation());
@@ -84,15 +89,15 @@ public class DiagnosisAdapter extends RecyclerView.Adapter<DiagnosisAdapter.Diag
             diagnosisSquare.setClickable(false);
             switch ((int) diagnosis.getEmergency()){
                 case 1:
-                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
+                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.green));
                     diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency1)));
                     break;
                 case 2:
-                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.bluePrimary));
+                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.orange));
                     diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency2)));
                     break;
                 case 3:
-                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                    diagnosisSquare.setBackgroundColor(context.getResources().getColor(R.color.red));
                     diagnosisUrgency.setText(diagnosisUrgency.getText().toString().concat(" " + context.getResources().getString(R.string.urgency3)));
                     break;
             }

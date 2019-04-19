@@ -38,6 +38,12 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
+    //Firebase Project
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+
+    //Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore:18.2.0'
+
     //Firebase Ads
     implementation 'com.google.firebase:firebase-ads:17.2.0'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
@@ -49,12 +55,7 @@ dependencies {
     //Proper Rating Bar
     implementation 'com.github.techery:properratingbar:0.0.5'
 
-    //Firebase Project
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-
-    //Firebase Firestore
-    implementation 'com.google.firebase:firebase-firestore:18.2.0'
-
-    //Gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
