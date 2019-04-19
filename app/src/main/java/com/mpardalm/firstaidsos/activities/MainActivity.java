@@ -13,6 +13,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.mpardalm.firstaidsos.R;
+import com.mpardalm.firstaidsos.adapters.MainAdapter;
+import com.mpardalm.firstaidsos.data.BodyPart;
 import com.mpardalm.firstaidsos.data.FireStoreDataBase;
 import com.mpardalm.firstaidsos.data.Symptom;
 import com.mpardalm.firstaidsos.adapters.SymptomsAdapter;
@@ -164,6 +166,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initAdapter(){
+
+        symptomsRecView.setLayoutManager(new LinearLayoutManager(this));
+
+         ArrayList<BodyPart> bodyParts = new ArrayList<>();
+
+         BodyPart cabeza = new BodyPart("Cabeza", list);
+         bodyParts.add(cabeza);
+
+        BodyPart tronco = new BodyPart("Cuerpo", list);
+        bodyParts.add(tronco);
+
+        MainAdapter adapter = new MainAdapter(bodyParts);
+        symptomsRecView.setAdapter(adapter);
+        /*
         SymptomsAdapter symptomsAdapter = new SymptomsAdapter(list);
         symptomsRecView.setAdapter(symptomsAdapter);
         symptomsRecView.setLayoutManager(new LinearLayoutManager(this));
@@ -171,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(symptomsRecView.getContext(),
                 ((LinearLayoutManager) symptomsRecView.getLayoutManager()).getOrientation());
         symptomsRecView.addItemDecoration(dividerItemDecoration);
+        */
     }
 
     private void initDataBase(){

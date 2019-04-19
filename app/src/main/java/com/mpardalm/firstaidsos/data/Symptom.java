@@ -1,10 +1,13 @@
 package com.mpardalm.firstaidsos.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mpardalm
  * */
 
-public class Symptom {
+public class Symptom implements Parcelable {
 
     private String name;
     private boolean checked;
@@ -13,6 +16,23 @@ public class Symptom {
         this.name = name;
         this.checked = checked;
     }
+
+    private Symptom(Parcel in) {
+        name = in.readString();
+        checked = in.readByte() != 0;
+    }
+
+    public static final Creator<Symptom> CREATOR = new Creator<Symptom>() {
+        @Override
+        public Symptom createFromParcel(Parcel in) {
+            return new Symptom(in);
+        }
+
+        @Override
+        public Symptom[] newArray(int size) {
+            return new Symptom[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -28,5 +48,15 @@ public class Symptom {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
     }
 }
