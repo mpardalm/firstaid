@@ -22,4 +22,9 @@
     <string name="emergency">emergency</string>
     <string name="recommendation">recommendation</string>
     <string name="image">image</string>
+
+    <!--Diagnosis Adapter-->
+    <string name="description_text"><u>Descripción</u></string>
+    <string name="recommendation_text"><u>Recomendación</u></string>
+    <string name="sintomas_text"><u>Síntomas</u></string>
 </resources>

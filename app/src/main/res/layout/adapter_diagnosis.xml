@@ -17,33 +17,71 @@
         android:id="@+id/diagnosis_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lumbago"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:textSize="32sp"
+        android:textSize="40sp"
         android:textColor="@color/cardview_dark_background"
         android:layout_margin="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description_text"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:id="@+id/diagnosis_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DESCRIPCIÓN"
-        android:layout_margin="8dp"/>
+        android:textStyle="italic"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recommendation_text"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:id="@+id/diagnosis_recommendation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recomendación"
-        android:layout_margin="8dp"/>
+        android:textStyle="italic"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sintomas_text"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:id="@+id/diagnosis_symptoms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sintomas"
-        android:layout_margin="8dp"/>
+        android:textStyle="italic"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,7 +107,5 @@
             android:textStyle="bold"
             app:prb_symbolicTick=" "/>
     </LinearLayout>
-
-
 
 </LinearLayout>

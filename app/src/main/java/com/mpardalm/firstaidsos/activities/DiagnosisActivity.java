@@ -50,7 +50,6 @@ public class DiagnosisActivity extends AppCompatActivity {
     }
 
     private void initToolbar(){
-        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
