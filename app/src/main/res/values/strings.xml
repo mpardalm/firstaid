@@ -21,10 +21,18 @@
     <string name="description">description</string>
     <string name="emergency">emergency</string>
     <string name="recommendation">recommendation</string>
+    <string name="body_part">bodyPart</string>
     <string name="image">image</string>
+    <string name="head">Cabeza</string>
+    <string name="body">Cuerpo</string>
+    <string name="arms">Extremidades Superiores (Brazos y manos)</string>
+    <string name="legs">Extremidades Inferiores (Piernas y pies)</string>
 
     <!--Diagnosis Adapter-->
     <string name="description_text"><u>Descripción</u></string>
     <string name="recommendation_text"><u>Recomendación</u></string>
     <string name="sintomas_text"><u>Síntomas</u></string>
+
+    <!--Exit-->
+    <string name="exit">Vuelva a pulsar ATRÁS para salir</string>
 </resources>

@@ -2,6 +2,7 @@ package com.mpardalm.firstaidsos.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -17,7 +18,6 @@ import com.mpardalm.firstaidsos.adapters.MainAdapter;
 import com.mpardalm.firstaidsos.data.BodyPart;
 import com.mpardalm.firstaidsos.data.FireStoreDataBase;
 import com.mpardalm.firstaidsos.data.Symptom;
-import com.mpardalm.firstaidsos.adapters.SymptomsAdapter;
 import com.mpardalm.firstaidsos.utils.Utils;
 
 import java.util.ArrayList;
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -64,7 +63,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.progress_bar_symptoms)
     ProgressBar progressBar;
 
-    private ArrayList<Symptom> list = new ArrayList<>();
+    private ArrayList<Symptom> headList = new ArrayList<>();
+    private ArrayList<Symptom> bodyList = new ArrayList<>();
+    private ArrayList<Symptom> bodyArms = new ArrayList<>();
+    private ArrayList<Symptom> bodyLegs = new ArrayList<>();
+
+
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showNoInternet();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.exit), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
     private void normalShow(){
         progressBar.setVisibility(View.VISIBLE);
         noInternetImage.setVisibility(View.INVISIBLE);
@@ -103,18 +121,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showNoInternet(){
+        progressBar.setVisibility(View.GONE);
         noInternetImage.setVisibility(View.VISIBLE);
         noInternetText.setVisibility(View.VISIBLE);
-        mAdViewBottom.setVisibility(View.INVISIBLE);
-        mAdViewTop.setVisibility(View.INVISIBLE);
-        cardView.setVisibility(View.INVISIBLE);
-        symptomsRecView.setVisibility(View.INVISIBLE);
-        selectSymptoms.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        mAdViewBottom.setVisibility(View.GONE);
+        mAdViewTop.setVisibility(View.GONE);
+        cardView.setVisibility(View.GONE);
+        symptomsRecView.setVisibility(View.GONE);
+        selectSymptoms.setVisibility(View.GONE);
     }
 
     @Override
@@ -122,8 +136,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.cardButtonSearch:
                 if(Utils.init(this).checkInternetConnecction()){
+                    ArrayList<Symptom> allSymptomsList = new ArrayList<>(headList);
+                    allSymptomsList.addAll(bodyList);
                     ArrayList<String> listSymptomsName = new ArrayList<>();
-                    for(Symptom symptom: list){
+                    for(Symptom symptom: allSymptomsList){
                         if(symptom.isChecked())
                             listSymptomsName.add(symptom.getName());
                     }
@@ -137,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
                     Toast.makeText(this, R.string.check_internet, Toast.LENGTH_SHORT).show();
                 }
-
-
+                break;
         }
     }
 
@@ -162,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initToolbar(){
         toolbar.setTitle(R.string.app_name);
-        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
     }
 
     public void initAdapter(){
@@ -171,30 +185,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
          ArrayList<BodyPart> bodyParts = new ArrayList<>();
 
-         BodyPart cabeza = new BodyPart("Cabeza", list);
-         bodyParts.add(cabeza);
+         BodyPart head = new BodyPart(getString(R.string.head), headList);
+         bodyParts.add(head);
 
-        BodyPart tronco = new BodyPart("Cuerpo", list);
-        bodyParts.add(tronco);
+        BodyPart body = new BodyPart(getString(R.string.body), bodyList);
+        bodyParts.add(body);
+
+        BodyPart arms = new BodyPart(getString(R.string.arms), bodyArms);
+        bodyParts.add(arms);
+
+        BodyPart legs = new BodyPart(getString(R.string.legs), bodyLegs);
+        bodyParts.add(legs);
 
         MainAdapter adapter = new MainAdapter(bodyParts);
         symptomsRecView.setAdapter(adapter);
-        /*
-        SymptomsAdapter symptomsAdapter = new SymptomsAdapter(list);
-        symptomsRecView.setAdapter(symptomsAdapter);
-        symptomsRecView.setLayoutManager(new LinearLayoutManager(this));
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(symptomsRecView.getContext(),
-                ((LinearLayoutManager) symptomsRecView.getLayoutManager()).getOrientation());
-        symptomsRecView.addItemDecoration(dividerItemDecoration);
-        */
     }
 
     private void initDataBase(){
         FireStoreDataBase.init(this).initDataBaseSymptoms(progressBar, this);
     }
 
-    public void setList(ArrayList<Symptom> list) {
-        this.list = list;
+    public void setHeadList(ArrayList<Symptom> headList) {
+        this.headList = headList;
+    }
+
+    public void setBodyList(ArrayList<Symptom> bodyList) {
+        this.bodyList = bodyList;
+    }
+
+    public void setBodyArms(ArrayList<Symptom> bodyArms) {
+        this.bodyArms = bodyArms;
+    }
+
+    public void setBodyLegs(ArrayList<Symptom> bodyLegs) {
+        this.bodyLegs = bodyLegs;
     }
 }

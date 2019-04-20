@@ -10,8 +10,8 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 public class SymptomsViewHolder extends ChildViewHolder {
 
-    TextView textViewSymptom;
-    CheckBox checkBoxSymptom;
+    private TextView textViewSymptom;
+    private CheckBox checkBoxSymptom;
 
     public SymptomsViewHolder(View itemView) {
         super(itemView);

@@ -39,26 +39,45 @@ public class FireStoreDataBase {
     public void initDataBaseSymptoms(ProgressBar progressBar, MainActivity activity){
         progressBar.setVisibility(View.VISIBLE);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        ArrayList<Symptom> list = new ArrayList<>();
+        ArrayList<Symptom> bodyList = new ArrayList<>();
+        ArrayList<Symptom> armsList = new ArrayList<>();
+        ArrayList<Symptom> headList = new ArrayList<>();
+        ArrayList<Symptom> legsList = new ArrayList<>();
 
         //get all documentes from symptoms
         db.collection(myContext.getResources().getString(R.string.symptoms))
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if(task.getResult().size() > list.size()){
-                            list.clear();
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                list.add(new Symptom((String) document.get(myContext.getResources().getString(R.string.name)), false));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String bodyPart = (String) document.get(myContext.getResources().getString(R.string.body_part));
+                            switch (bodyPart){
+                                case "Cabeza":
+                                    headList.add(new Symptom((String) document.get(myContext.getResources().getString(R.string.name)), false));
+                                    break;
+                                case "Cuerpo":
+                                    bodyList.add(new Symptom((String) document.get(myContext.getResources().getString(R.string.name)), false));
+                                    break;
+                                case "Brazos":
+                                    armsList.add(new Symptom((String) document.get(myContext.getResources().getString(R.string.name)), false));
+                                    break;
+                                case "Piernas":
+                                    legsList.add(new Symptom((String) document.get(myContext.getResources().getString(R.string.name)), false));
                             }
+                            Log.d(TAG, document.getId() + " => " + document.getData());
                         }
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
                     }
-                    Collections.sort(list, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    Collections.sort(bodyList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    Collections.sort(headList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    Collections.sort(armsList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    Collections.sort(legsList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
                     progressBar.setVisibility(View.INVISIBLE);
-                    activity.setList(list);
+                    activity.setBodyList(bodyList);
+                    activity.setHeadList(headList);
+                    activity.setBodyArms(armsList);
+                    activity.setBodyLegs(legsList);
                     activity.initAdapter();
                 });
     }
@@ -82,22 +101,19 @@ public class FireStoreDataBase {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 if(!documentList.contains(document)){
                                     documentList.add(document);
+                                    Diagnosis d = new Diagnosis();
+                                    d.setImage((String) document.get(myContext.getResources().getString(R.string.image)));
+                                    d.setDescription((String) document.get(myContext.getResources().getString(R.string.description)));
+                                    d.setName((String) document.get(myContext.getResources().getString(R.string.name)));
+                                    d.setRecommendation((String) document.get(myContext.getResources().getString(R.string.recommendation)));
+                                    d.setSymptoms((ArrayList<String>) document.get(myContext.getResources().getString(R.string.symptoms)));
+                                    d.setEmergency((Long) document.get(myContext.getResources().getString(R.string.emergency)));
+                                    listDiagnosis.add(d);
                                     Log.d(TAG, document.getId() + " => " + document.getData());
                                 }
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-
-                        for(QueryDocumentSnapshot document : documentList){
-                            Diagnosis d = new Diagnosis();
-                            d.setImage((String) document.get(myContext.getResources().getString(R.string.image)));
-                            d.setDescription((String) document.get(myContext.getResources().getString(R.string.description)));
-                            d.setName((String) document.get(myContext.getResources().getString(R.string.name)));
-                            d.setRecommendation((String) document.get(myContext.getResources().getString(R.string.recommendation)));
-                            d.setSymptoms((ArrayList<String>) document.get(myContext.getResources().getString(R.string.symptoms)));
-                            d.setEmergency((Long) document.get(myContext.getResources().getString(R.string.emergency)));
-                            listDiagnosis.add(d);
                         }
                         activity.setListDiagnosis(listDiagnosis);
                         progressBar.setVisibility(View.INVISIBLE);
